@@ -4,7 +4,7 @@ $env = get-content $Config | out-string | convertFrom-StringData
 $env.password = $env.password | convertto-securestring -Key $Key
 $mycreds = New-Object System.Management.Automation.PSCredential ($env.username, $env.password)
 $session = Connect-VIServer -Server $env.vcenter -Credential $mycreds
-
+/usr/bin/php /home/zerto/zplanner/loaders/tocsv.php
 
 $startdir = "/home/zerto/data/"
 $csvfile = "$startdir/vminfo.csv"
