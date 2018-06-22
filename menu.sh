@@ -33,7 +33,7 @@ do
           1) # Update zPlanner Scripts from Github
               clear
 	      echo "Updating zPlanner from github"
-	      git-dir=/home/zerto/zplanner/.git pull
+	      (cd /home/zerto/zplanner/ && git pull http://github.com/recklessop/zplanner/) 
               ;;
           2) # Config Network Settings
               echo "Network config stuff here... later on."
