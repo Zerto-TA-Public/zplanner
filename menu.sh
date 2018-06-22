@@ -24,11 +24,11 @@ do
   echo "   Default Gateway: $ipgw"
   echo "=================================================="
   echo -e "Select an action from the menu below\n"
-  echo "1.) Update zPlanner       2.) Configure Network Settings"
-  echo "3.) Config Customer Info  4.) Config Hypervisor Info" 
-  echo "5.) Start Scheduled Jobs  6.) Delete Scheduled Jobs"
-  echo "7.) Config Zerto Team     8.) Upload SQL Data to Zerto"
-  echo "9.) Bash Shell            0.) Quit"
+  echo "1.) Update zPlanner        2.) Configure Network Settings"
+  echo "3.) Config Hypervisor Info 4.) Test Hypervisor Connectivity" 
+  echo "5.) Start Scheduled Jobs   6.) Delete Scheduled Jobs"
+  echo "7.) Config Zerto Op Info   8.) Reserved for Future Use"
+  echo "9.) Bash Shell             0.) Quit"
   read choice
   case "$choice" in
           1) # Update zPlanner Scripts from Github
@@ -73,10 +73,19 @@ do
       		esac
               ;;
           3) # Config Customer Information
-              echo "you chose choice $REPLY which is $choice"
+	      clear
+	      echo "========================"
+	      echo "Hypervizor Config Wizard"
+	      echo -e "========================\n"
+              /usr/bin/pwsh /home/zerto/zplanner/workers/vm-setenv.ps1
               ;;
           4) # Config Customer Information
-              echo "you chose choice $REPLY which is $choice"
+	      clear
+	      echo "==============================="
+	      echo "Testing Hypervizor Connectivity"
+	      echo -e "===============================\n"
+              /usr/bin/pwsh /home/zerto/zplanner/workers/vm-testenv.ps1
+	      echo "If an error occured please run Hypervisor Configuration Wizard"
               ;;
           5) # Schedule Cron Jobs
 	      clear
@@ -134,11 +143,34 @@ do
 			;;
 	        esac
               ;;
-          7) # Config Zerto Team Information
-              break
+          7) # Config Zerto opp Information
+	      cfgfile=/home/zerto/include/config.ini
+	      echo "Enter Customer Name:"
+	      read custname
+	      echo "Enter Customer Site Name:"
+	      read custsite
+	      echo "Enter Zerto Account Manager Name:"
+	      read zAM
+	      echo "Enter Zerto SE Name:"
+	      read zSE
+
+	      # add names to values
+	      custname="company=${custname}"
+	      custsite="site=${custsite}"
+	      zAM="am=${zAM}"
+	      zSE="se=${zSE}"
+
+	      if [ -f "$cfgfile" ]
+	      then
+		echo "$custname" > "$cfgfile"
+		echo "$custsite" >> "$cfgfile"
+		echo "$zAM" >> "$cfgfile"
+		echo "$zSE" >> "$cfgfile"
+	      fi
+	      /usr/bin/php /home/zerto/zplanner/loaders/loadConfigmysql.php
               ;;
           8) # Dump SQL Database and upload to Zerto
-              break
+	      echo "A little early aren't you?"
               ;;
           9) # enter bash shell prompt
               clear

@@ -14,13 +14,12 @@ if (file_exists($cfgfile) && filesize($cfgfile) > 0) {
 	$Customer = $config['company'];
 	$AM = $config['am'];
 	$SE = $config['se'];
-	$CustomerContact = $config['custName'];
-	$CustomerEmail = $config['custemail'];
 	$SiteName = $config['site'];
-	$vCenter = $config['vcenter'];
 
-	mysqli_query($connect, "INSERT INTO accountinfo (Customer, AM, SE, CustomerContact, CustomerEmail, SiteName, vCenter) 
-		VALUES ('$Customer', '$AM', '$SE', '$CustomerContact', '$CustomerEmail', '$SiteName', '$vCenter') ") or die (mysqli_error($connect));
+	mysqli_query($connect, "TRUNCATE TABLE accountinfo") or die (mysqli_error($connect));
+
+	mysqli_query($connect, "INSERT INTO accountinfo (Customer, AM, SE, SiteName)
+		VALUES ('$Customer', '$AM', '$SE', '$SiteName') ") or die (mysqli_error($connect));
 }
 ?>
 
