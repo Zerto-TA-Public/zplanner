@@ -1,3 +1,9 @@
+#!/usr/bin/pwsh
+
+# get latest monitored VMs and sort into csv files
+/usr/bin/php /home/zerto/zplanner/loaders/tocsv.php
+
+#start getio workers
 start-job -FilePath "/home/zerto/zplanner/workers/getio/vm-getio0.ps1"
 start-job -FilePath "/home/zerto/zplanner/workers/getio/vm-getio1.ps1"
 start-job -FilePath "/home/zerto/zplanner/workers/getio/vm-getio2.ps1"
