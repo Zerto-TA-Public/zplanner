@@ -15,7 +15,7 @@ do
   # start menu output
   clear
   echo "=================================================="
-  echo " zPlanner Info and Config menu "
+  echo "=          zPlanner Info and Config menu         ="
   echo "=================================================="
   echo "Current Network Config:"
   echo "   Interface Name: $interface"
@@ -24,10 +24,11 @@ do
   echo "   Default Gateway: $ipgw"
   echo "=================================================="
   echo -e "Select an action from the menu below\n"
-  echo "1.) Update zPlanner     2.) Configure Network Settings"
-  echo "3.) Upload SQL Data     4.) Start Scheduled Jobs"
-  echo "5.) Stop Scheduled Jobs 6.) Shell"
-  echo "7.) Quit"
+  echo "1.) Update zPlanner       2.) Configure Network Settings"
+  echo "3.) Config Customer Info  4.) Config Hypervisor Info" 
+  echo "5.) Start Scheduled Jobs  6.) Delete Scheduled Jobs"
+  echo "7.) Config Zerto Team     8.) Upload SQL Data to Zerto"
+  echo "9.) Bash Shell            0.) Quit"
   read choice
   case "$choice" in
           1) # Update zPlanner Scripts from Github
@@ -36,12 +37,48 @@ do
 	      (cd /home/zerto/zplanner/ && git pull http://github.com/recklessop/zplanner/)
               ;;
           2) # Config Network Settings
-              echo "Network config stuff here... later on."
+	      clear
+	      echo "====================="
+	      echo "Network Config Wizard"
+	      echo -e "=====================\n"
+	      echo "Configure appliance with DHCP or STATIC IP? (S=Static, D=DHCP)"
+	      read cronvminfo
+	        case "$cronvminfo" in
+          	    "S" | "s") # update /etc/network/interface with static config
+				echo "Enter IP address (xxx.xxx.xxx.xxx):"
+				read nicip
+				echo "Enter Subnet Mask (xxx.xxx.xxx.xxx):"
+				read nicmask
+				echo "Enter Default Gateway (xxx.xxx.xxx.xxx):"
+				read nicgw
+				echo "Enter DNS Servers (Seperate by space):"
+				read nicdns
+				echo "Does everything look correct? (Y/N)"
+				read confirm
+				case "$confirm" in
+				   "Y" | "y")
+					awk -f /home/zerto/zplanner/modules/changeInterface.awk /etc/network/interfaces device="$interface" mode=static address="$nicip" netmask="$nicmask" dns="$nicdns" gateway="$nicgw" | sudo tee /etc/network/interfaces
+					sudo /etc/init.d/networking restart
+					;;
+				   *)
+					break
+					;;
+				esac
+				;;
+	            "D" | "d") # update /etc/network/interface with dhcp config
+				awk -f /home/zerto/zplanner/modules/changeInterface.awk /etc/network/interfaces device=enp0s17 mode=dhcp | sudo tee /etc/network/interfaces
+				sudo /etc/init.d/networking restart
+				;;
+		    *) echo "invalid option try again";;
+      		esac
               ;;
-          3) # choice 3
+          3) # Config Customer Information
               echo "you chose choice $REPLY which is $choice"
               ;;
-          4) # choice 4
+          4) # Config Customer Information
+              echo "you chose choice $REPLY which is $choice"
+              ;;
+          5) # Schedule Cron Jobs
 	      clear
 	      echo "====================="
 	      echo "Job Scheduling Wizard"
@@ -80,14 +117,34 @@ do
 	      crontab -l
 	      # add code to write number of minutes between stats run to config file so the getio script can use it
               ;;
-          5) # choice 5
-              crontab -r
+          6) # Kill all exisint CronJobs
+	      clear
+	      echo "=============================="
+	      echo "Existing Cron jobs "
+	      echo "=============================="
+	      crontab -l
+	      echo "=========== WARNING =========="
+	      echo "Remove all existing Cron Jobs? (Y/N)"
+      	      read crondel
+	        case "$crondel" in
+	             "y" | "Y") # delete crontab
+			crontab -r
+			;;
+	             *) # do nothing
+			;;
+	        esac
               ;;
-          6) # enter bash shell prompt
+          7) # Config Zerto Team Information
+              break
+              ;;
+          8) # Dump SQL Database and upload to Zerto
+              break
+              ;;
+          9) # enter bash shell prompt
               clear
 	      /bin/bash
               ;;
-          7) # exit the menu script
+          0) # exit the menu script
               exit
               ;;
           *) echo "invalid option try again";;
