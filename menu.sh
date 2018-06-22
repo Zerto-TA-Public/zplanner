@@ -34,7 +34,7 @@ do
           1) # Update zPlanner Scripts from Github
               clear
 	      echo "Updating zPlanner from github"
-	      (cd /home/zerto/zplanner/ && git reset --hard HEAD && git pull http://www.github.com/recklessop/zplanner/)
+	      (cd /home/zerto/zplanner/ && git reset --hard HEAD && git pull http://www.github.com/zerto-ta-public/zplanner/)
               ;;
           2) # Config Network Settings
 	      clear
