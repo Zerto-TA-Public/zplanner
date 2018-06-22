@@ -124,11 +124,16 @@ do
 	      done
 
 	      echo "How Often should I collect stats (in minutes)?"
-	      echo "Default = 5 minutes; Valid Options = 5, 10, 15, 20, 25, 30"
+	      echo "Default = 5 minutes; Valid Options = 5, 10, 15, 20, 30, 60"
 	      read cronstats
 	      echo "Building Crontab..."
 	      echo "$cronstats" > /home/zerto/include/interval.txt
-	      line="*/$cronstats * * * * /usr/bin/pwsh /home/zerto/zplanner/workers/vm-getio.ps1"
+	      if [ $cronstats -eq 60 ]
+	      then
+	      	line="0 * * * * /usr/bin/pwsh /home/zerto/zplanner/workers/vm-getio.ps1"
+	      else
+		line="*/$cronstats * * * * /usr/bin/pwsh /home/zerto/zplanner/workers/vm-getio.ps1"
+	      fi
 	      (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
 
 	      crontab -l
