@@ -25,9 +25,9 @@ do
   echo "=================================================="
   echo -e "Select an action from the menu below\n"
   echo "1.) Update zPlanner        2.) Configure Network Settings"
-  echo "3.) Config Hypervisor Info 4.) Test Hypervisor Connectivity" 
-  echo "5.) Start Scheduled Jobs   6.) Delete Scheduled Jobs"
-  echo "7.) Config Zerto Op Info   8.) Reserved for Future Use"
+  echo "3.) Config Hypervisor Info 4.) Test Hypervisor Connectivity"
+  echo "5.) Generate VM List       6.) Start Scheduled Jobs"
+  echo "7.) Config Zerto Op Info   8.) Delete Scheduled Jobs"
   echo "9.) Bash Shell             0.) Quit"
   read choice
   case "$choice" in
@@ -87,7 +87,14 @@ do
               /usr/bin/pwsh /home/zerto/zplanner/workers/vm-testenv.ps1
 	      echo "If an error occured please run Hypervisor Configuration Wizard"
               ;;
-          5) # Schedule Cron Jobs
+          5) # Config Customer Information
+	      clear
+	      echo "========================"
+	      echo "Generating List of VMs"
+	      echo -e "========================\n"
+              /usr/bin/pwsh /home/zerto/zplanner/workers/vm-getvms.ps1
+              ;;
+          6) # Schedule Cron Jobs
 	      clear
 	      echo "====================="
 	      echo "Job Scheduling Wizard"
@@ -120,28 +127,11 @@ do
 	      echo "Default = 5 minutes; Valid Options = 5, 10, 15, 20, 25, 30"
 	      read cronstats
 	      echo "Building Crontab..."
+	      echo "$cronstats" > /home/zerto/include/interval.txt
 	      line="*/$cronstats * * * * /usr/bin/pwsh /home/zerto/zplanner/workers/vm-getio.ps1"
 	      (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
 
 	      crontab -l
-	      # add code to write number of minutes between stats run to config file so the getio script can use it
-              ;;
-          6) # Kill all exisint CronJobs
-	      clear
-	      echo "=============================="
-	      echo "Existing Cron jobs "
-	      echo "=============================="
-	      crontab -l
-	      echo "=========== WARNING =========="
-	      echo "Remove all existing Cron Jobs? (Y/N)"
-      	      read crondel
-	        case "$crondel" in
-	             "y" | "Y") # delete crontab
-			crontab -r
-			;;
-	             *) # do nothing
-			;;
-	        esac
               ;;
           7) # Config Zerto opp Information
 	      cfgfile=/home/zerto/include/config.ini
@@ -169,8 +159,22 @@ do
 	      fi
 	      /usr/bin/php /home/zerto/zplanner/loaders/loadConfigmysql.php
               ;;
-          8) # Dump SQL Database and upload to Zerto
-	      echo "A little early aren't you?"
+          8) # Kill all exisint CronJobs
+	      clear
+	      echo "=============================="
+	      echo "Existing Cron jobs "
+	      echo "=============================="
+	      crontab -l
+	      echo "=========== WARNING =========="
+	      echo "Remove all existing Cron Jobs? (Y/N)"
+      	      read crondel
+	        case "$crondel" in
+	             "y" | "Y") # delete crontab
+			crontab -r
+			;;
+	             *) # do nothing
+			;;
+	        esac
               ;;
           9) # enter bash shell prompt
               clear

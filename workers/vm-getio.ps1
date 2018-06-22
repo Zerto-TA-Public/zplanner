@@ -8,9 +8,12 @@ Import-Module -Name /home/zerto/zplanner/modules/get-vmmaxiops.psm1
 $session = Connect-VIServer -Server $env.vcenter -Credential $mycreds
 
 $list = Import-CSV "/home/zerto/data/vmlist.csv"
-
+$int = Get-Content "/home/zerto/include/interval.txt"
+if ( !$int ) {
+	$int = 5;
+}
 ForEach ($vm in $list){
-	$report += Get-VM -Name $vm.Name | Get-VMmaxIOPS -Minutes 5
+	$report += Get-VM -Name $vm.Name | Get-VMmaxIOPS -Minutes $int
 }
 disconnect-viserver $session -confirm:$false
 
