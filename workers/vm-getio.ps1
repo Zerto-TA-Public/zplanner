@@ -7,6 +7,8 @@ $mycreds = New-Object System.Management.Automation.PSCredential ($env.username, 
 Import-Module -Name /home/zerto/zplanner/modules/get-vmmaxiops.psm1
 $session = Connect-VIServer -Server $env.vcenter -Credential $mycreds
 
+/usr/bin/php /home/zerto/zplanner/loaders/tocsv.php
+
 $list = Import-CSV "/home/zerto/data/vmlist.csv"
 $int = Get-Content "/home/zerto/include/interval.txt"
 if ( !$int ) {
