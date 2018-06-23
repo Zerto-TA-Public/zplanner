@@ -37,8 +37,7 @@ if ($count < 30) {
                 fwrite($handle, $data);
         }
 } else {
-
-        // if we have more than 25 vms then we need to figure out how many VMs each worker will have to do. SO total vm count / 10 = number per worker
+        // if we have more than 30 vms then we need to figure out how many VMs each worker will have to do. SO total vm count / 10 = number per worker
         $perworker = ceil($count / 10);
         for ($i = 0; $i < 10; $i++) {
                 // create a csv file with a 1-10 number before the extension
