@@ -1,4 +1,7 @@
 #!/usr/bin/pwsh
+$now=Get-Date -format "yyyyMMdd-HHmm"
+
+function getio {
 $Config = "/home/zerto/include/config.txt"
 $Key = (3,4,2,3,56,34,254,222,1,1,2,23,42,54,33,233,1,34,2,7,6,5,35,43)
 $csvPath = "/home/zerto/data/stats0.csv"
@@ -13,7 +16,7 @@ $env.password = $env.password | convertto-securestring -Key $Key
 $mycreds = New-Object System.Management.Automation.PSCredential ($env.username, $env.password)
 Import-Module -Name /home/zerto/zplanner/modules/get-vmmaxiops.psm1
 $session = Connect-VIServer -Server $env.vcenter -Credential $mycreds
-	
+
 $list = Import-CSV $vmlist
 $int = Get-Content "/home/zerto/include/interval.txt"
 if ( !$int ) {
@@ -33,3 +36,9 @@ $report | select "VM", "Disk", "CapacityGB", "IOPSReadAvg", "IOPSWriteAvg", "KBW
 else {
 Write-Host "No CSV File Found" 
 }
+
+}
+
+$file = "/home/zerto/logs/" + $now + "-getio0.log"
+
+getio *> $file

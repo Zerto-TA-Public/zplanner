@@ -35,7 +35,8 @@ do
               clear
 	      echo "Updating zPlanner from github"
 	      (cd /home/zerto/zplanner/ && git reset --hard HEAD && git pull http://www.github.com/zerto-ta-public/zplanner/)
-              ;;
+              mkdir -p /home/zerto/logs
+	      ;;
           2) # Config Network Settings
 	      clear
 	      echo "====================="
@@ -124,7 +125,7 @@ do
 	      done
 
 	      echo "How Often should I collect stats (in minutes)?"
-	      echo "Default = 5 minutes; Valid Options = 5, 10, 15, 20, 30, 60"
+	      echo "Valid Options = 5, 10, 15, 20, 30, 60"
 	      read cronstats
 	      echo "Building Crontab..."
 	      echo "$cronstats" > /home/zerto/include/interval.txt
@@ -135,8 +136,6 @@ do
 		line="*/$cronstats * * * * /usr/bin/pwsh /home/zerto/zplanner/workers/vm-getio.ps1"
 	      fi
 	      (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
-
-	      /usr/bin/pwsh /home/zerto/zplanner/workers/vm-vminfo.ps1
 
 	      crontab -l
               ;;

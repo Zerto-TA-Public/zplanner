@@ -1,5 +1,47 @@
 #!/usr/bin/pwsh
 
+# start stopwatch for auto scheduling
+$stopwatch = [system.diagnostics.stopwatch]::startNew();
+
+$exectimefile = "/home/zerto/include/exectime.txt"
+$lockfile = "/home/zerto/data/getio.pid"
+$lockstatus = 0
+While ($lockstatus -ne 1)
+{
+	If (Test-Path $lockfile)
+	{
+	    echo “Lock file found!”
+	    $pidlist = Get-content $lockfile
+	    If (!$pidlist)
+	    {
+		$PID | Out-File $lockfile
+		$lockstatus = 1
+	    }
+	    $currentproclist = Get-Process | ? { $_.id -match $pidlist }
+	    If ($currentproclist)
+	    {
+		echo “lockfile in use by other process!”
+		exit
+		#$rndwait = New-Object system.Random
+		#$rndwait= $rndwait.next(1,4)
+		#echo “Sleeping for $rndwait seconds”
+		#Start-Sleep $rndwait
+	    }
+	    Else
+	    {
+		Remove-Item $lockfile -Force
+		$PID | Out-File $lockfile
+		$lockstatus = 1
+	    }
+	}
+	Else
+	{
+	    $PID | Out-File $lockfile
+	    $lockstatus = 1
+	}
+}
+
+
 # get latest monitored VMs and sort into csv files
 /usr/bin/php /home/zerto/zplanner/loaders/tocsv.php
 
@@ -18,3 +60,19 @@ start-job -Name GetIO9 -ScriptBlock {pwsh /home/zerto/zplanner/workers/getio/vm-
 
 # wait for all jobs to complete before exiting session
 Get-Job | Wait-Job
+
+
+# stop stopwatch and update exectime file
+$stopwatch.stop();
+
+$exectime = ([math]::Round($stopwatch.elapsed.totalminutes) +1 )
+
+$exectime | Out-File $exectimefile
+
+/bin/bash /home/zerto/workers/updatecron.sh
+
+## End of Main Part
+#———————————————————————————————–
+#remove the lockfile
+Remove-Item $lockfile –Force
+
