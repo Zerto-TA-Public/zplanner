@@ -15,7 +15,7 @@ do
   # start menu output
   clear
   echo "=================================================="
-  echo "=          zPlanner Info and Config menu v3.0.3  ="
+  echo "=      zPlanner Info and Config menu v3.0.4      ="
   echo "=================================================="
   echo "Current Network Config:"
   echo "   Interface Name: $interface"
@@ -135,6 +135,7 @@ do
 		line="*/$cronstats * * * * /usr/bin/pwsh /home/zerto/zplanner/workers/vm-getio.ps1"
 	      fi
 	      (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
+	      /usr/bin/pwsh /home/zerto/zplanner/workers/vm-vminfo.ps1
 
 	      crontab -l
               ;;
