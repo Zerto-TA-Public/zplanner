@@ -1,11 +1,15 @@
 #!/usr/bin/pwsh
+$now=Get-Date -format "yyyyMMdd-HHmm"
+
+function getvminfo {
+
 $Config = "/home/zerto/include/config.txt"
 $Key = (3,4,2,3,56,34,254,222,1,1,2,23,42,54,33,233,1,34,2,7,6,5,35,43)
 $env = get-content $Config | out-string | convertFrom-StringData
 $env.password = $env.password | convertto-securestring -Key $Key
 $mycreds = New-Object System.Management.Automation.PSCredential ($env.username, $env.password)
 $session = Connect-VIServer -Server $env.vcenter -Credential $mycreds
-/usr/bin/php /home/zerto/zplanner/loaders/tocsv.php
+#/usr/bin/php /home/zerto/zplanner/loaders/tocsv.php
 
 $startdir = "/home/zerto/data/"
 $csvfile = "$startdir/vminfo.csv"
@@ -63,4 +67,10 @@ $myCol | select "VMName", "NumCPU", "MEMSize" | ConvertTo-Csv | Select -Skip 1 |
 /usr/bin/php /home/zerto/zplanner/loaders/loadVMinfomysql.php vminfo.csv
 
 Write-Host "VM CPU / Memory Info has been loaded into the Database"
-Write-Host "Next Run contab -e and un-comment the scheduled tasks to start stats collection"
+
+}
+
+$file = "/home/zerto/logs/" + $now + "-vminfo.log"
+
+getvminfo *> $file
+
