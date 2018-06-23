@@ -5,8 +5,8 @@ $csvpath = '/home/zerto/data/';
 //delete old CSV files
 for ($i = 0; $i < 10; $i++) {
         $file = $csvpath . "vmlist" . $i . ".csv";
-        unlink($file);
-        echo "Deleted " . $file . PHP_EOL;
+        //need to add if statement to see if it exists before deleteing
+	unlink($file);
 }
 
 //connect to the database
