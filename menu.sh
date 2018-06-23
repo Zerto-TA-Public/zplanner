@@ -15,7 +15,7 @@ do
   # start menu output
   clear
   echo "=================================================="
-  echo "=      zPlanner Info and Config menu v3.0.4      ="
+  echo "=      zPlanner Info and Config menu v3.0.5      ="
   echo "=================================================="
   echo "Current Network Config:"
   echo "   Interface Name: $interface"
@@ -79,7 +79,7 @@ do
 	      echo -e "========================\n"
               /usr/bin/pwsh /home/zerto/zplanner/workers/vm-setenv.ps1
               ;;
-          4) # Config Customer Information
+          4) # Test Hypervisor connectivity
 	      clear
 	      echo "==============================="
 	      echo "Testing Hypervizor Connectivity"
@@ -135,6 +135,7 @@ do
 		line="*/$cronstats * * * * /usr/bin/pwsh /home/zerto/zplanner/workers/vm-getio.ps1"
 	      fi
 	      (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
+
 	      /usr/bin/pwsh /home/zerto/zplanner/workers/vm-vminfo.ps1
 
 	      crontab -l
@@ -189,9 +190,46 @@ do
           0) # exit the menu script
               exit
               ;;
+          A) # Advanced Menu
+      	      while true
+	      do
+                clear
+		echo "=============================="
+	      	echo "Advanced Menu "
+	      	echo "=============================="
+	      	echo -e "Select an action from the menu below\n"
+  	      	echo "1.) Manually Run VMInfo Script"
+	      	echo "2.) Dump SQL DB to Zerto FTP"
+  	      	echo "3.) Reserved"
+   	      	echo "4.) Reserved"
+  	      	echo "0.) Back to Main Menu"
+  	      	read adv
+  	      	case "$adv" in
+          		1) # Manually run VMInfo Script
+			   /usr/bin/pwsh /home/zerto/zplanner/workers/vm-vminfo.ps1
+              	   	   ;;
+          		2) # Dump SQL DB to Zerto FTP
+			   echo "==================================="
+			   echo "Dumping database to file"
+			   #do some db dump stuff here
+              	   	   ;;
+          		3) # reserved
+			   break
+              	   	   ;;
+          		4) # reserved
+			   break
+              	   	   ;;
+			0) # go back to main menu
+			   break
+			   ;;
+          		*) echo "invalid option try again";;
+      		esac
+	      done
+	      ;;
           *) echo "invalid option try again";;
       esac
       echo "Press any key to Continue..."
       read input
-  done
 done
+done
+

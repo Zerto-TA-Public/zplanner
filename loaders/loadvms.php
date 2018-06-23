@@ -23,10 +23,8 @@ while ($data = fgetcsv($handle,1000, ",", '"')) {
                     '".addslashes($data[0])."',
                     'N'
                 )
-            ") or die (mysqli_error($connect));
+            ");
         }
-    } 
-    //
-
+    }
 }
 ?>
