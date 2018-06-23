@@ -6,7 +6,9 @@ $csvpath = '/home/zerto/data/';
 for ($i = 0; $i < 10; $i++) {
         $file = $csvpath . "vmlist" . $i . ".csv";
         //need to add if statement to see if it exists before deleteing
-	unlink($file);
+	if (file_exists($file)) {
+	    unlink($file);
+	}
 }
 
 //connect to the database
@@ -18,8 +20,8 @@ mysqli_select_db($connect,"zerto"); //select the table
 $result = mysqli_query($connect, "SELECT * FROM `vms` WHERE `monitor` = 'Y'") or die(mysqli_error($connect));
 $count = mysqli_num_rows($result) or die(mysqli_error($connect));
 echo $count . PHP_EOL;
-// if monitoring 25 vms or less only use 1 worker
-if ($count < 26) {
+// if monitoring 30 vms or less only use 1 worker
+if ($count < 30) {
         // store all vms in vmlist0
         $csvfile = $csvpath . "vmlist0.csv";
         echo $csvfile . PHP_EOL;
