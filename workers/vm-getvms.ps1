@@ -1,3 +1,4 @@
+#!/usr/bin/pwsh
 Write-Host "Generating list of all VMs in vCenter."
 
 $Config = "/home/zerto/include/config.txt"
