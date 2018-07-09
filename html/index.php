@@ -14,5 +14,5 @@ $server = $_SERVER['SERVER_ADDR'];
 <h3>VPG Designer</h3>
 <p>This section will contain links for designing VPGs so that we can see how much throughput / Bandwidth will be needed for each.</p>
 <hr>
-<a href="phpmyadmin/">PHPMyAdmin</a> - For Exporting data or Importing VM lists
+<b><a href="phpmyadmin/">PHPMyAdmin</a></b> - For Exporting data or Importing VM lists (Zerto SE use)
 
