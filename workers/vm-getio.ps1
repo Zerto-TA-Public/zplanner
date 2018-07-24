@@ -65,7 +65,7 @@ Get-Job | Wait-Job
 # stop stopwatch and update exectime file
 $stopwatch.stop();
 
-$exectime = ([math]::Round($stopwatch.elapsed.totalminutes) +1 )
+$exectime = ([math]::Round($stopwatch.elapsed.totalminutes))
 
 $exectime | Out-File $exectimefile
 

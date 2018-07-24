@@ -15,7 +15,7 @@ do
   # start menu output
   clear
   echo "=================================================="
-  echo "=      zPlanner Info and Config menu v3.0.5      ="
+  echo "=      zPlanner Info and Config menu v3.0.6      ="
   echo "=================================================="
   echo "Current Network Config:"
   echo "   Interface Name: $interface"
@@ -35,7 +35,7 @@ do
               clear
 	      echo "Updating zPlanner from github"
 	      (cd /home/zerto/zplanner/ && git reset --hard HEAD && git pull http://www.github.com/zerto-ta-public/zplanner/)
-              mkdir -p /home/zerto/logs
+	      /bin/bash /home/zerto/zplanner/updates.sh
 	      ;;
           2) # Config Network Settings
 	      clear
