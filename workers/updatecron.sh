@@ -1,5 +1,5 @@
 #!/bin/bash
-new=$(< /home/zerto/include/exectime.txt)
+typeset -i new=$(< /home/zerto/include/exectime.txt)
 new=$new*2
 int=60
 if [ "$new" -lt 5 ]; then
