@@ -69,7 +69,7 @@ $exectime = ([math]::Round($stopwatch.elapsed.totalminutes) +1 )
 
 $exectime | Out-File $exectimefile
 
-/bin/bash /home/zerto/workers/updatecron.sh
+/bin/bash /home/zerto/zplanner/workers/updatecron.sh
 
 ## End of Main Part
 #———————————————————————————————–
