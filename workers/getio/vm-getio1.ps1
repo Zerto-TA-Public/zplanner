@@ -28,7 +28,7 @@ ForEach ($vm in $list){
 }
 disconnect-viserver $session -confirm:$false
 
-$report | select "VM", "Disk", "CapacityGB", "IOPSReadAvg", "IOPSWriteAvg", "KBWriteAvg", "KBReadAvg" | ConvertTo-Csv | Select -Skip 2 | Out-File $csvPath
+$report | select "VM", "Disk", "CapacityGB", "IOPSReadAvg", "IOPSWriteAvg", "KBWriteAvg", "KBReadAvg" | ConvertTo-Csv | Select -Skip 1 | Out-File $csvPath
 
 /usr/bin/php /home/zerto/zplanner/loaders/loadmysql.php stats1.csv
 
