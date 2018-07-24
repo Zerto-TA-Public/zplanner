@@ -35,7 +35,8 @@ do
               clear
 	      echo "Updating zPlanner from github"
 	      (cd /home/zerto/zplanner/ && git reset --hard HEAD && git pull http://www.github.com/zerto-ta-public/zplanner/)
-	      /bin/bash /home/zerto/zplanner/updates.sh
+	      echo "Running Update Helper Script"
+	      (/bin/bash /home/zerto/zplanner/updates.sh)
 	      ;;
           2) # Config Network Settings
 	      clear
