@@ -4,6 +4,7 @@
 $stopwatch = [system.diagnostics.stopwatch]::startNew();
 
 $exectimefile = "/home/zerto/include/exectime.txt"
+$datetimefile = "/home/zerto/include/datetime.txt"
 $lockfile = "/home/zerto/data/getio.pid"
 $lockstatus = 0
 While ($lockstatus -ne 1)
@@ -44,6 +45,10 @@ While ($lockstatus -ne 1)
 
 # get latest monitored VMs and sort into csv files
 /usr/bin/php /home/zerto/zplanner/loaders/tocsv.php
+
+#generate datetime for this run
+$datetime = get-date -Format "yyyy-MM-dd hh:mm:ss"
+$datetime | Out-File $datetimefile
 
 #start getio workers
 start-job -Name GetIO0 -ScriptBlock {pwsh /home/zerto/zplanner/workers/getio/vm-getio0.ps1}
