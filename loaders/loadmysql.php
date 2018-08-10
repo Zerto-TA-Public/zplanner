@@ -41,7 +41,10 @@ while ($data = fgetcsv($handle,1000, ",", '"')) {
             ") or die (mysqli_error($connect));
         }
     } 
-    //
+    // change datestamp seconds to 00 to make graphing in grafana easier
+            mysqli_query($connect, 
+		"UPDATE stats SET datestamp=(DATE_FORMAT(datestamp, '%Y-%m-%d %H:%i:00'))"
+		) or die (mysqli_error($connect));
 
 }
 ?>
