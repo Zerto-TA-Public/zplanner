@@ -8,7 +8,7 @@ $env.password = $env.password | convertto-securestring -Key $Key
 $mycreds = New-Object System.Management.Automation.PSCredential ($env.username, $env.password)
 $session = Connect-VIServer -Server $env.vcenter -Credential $mycreds
 
-Get-VM | Select Name | ConvertTo-Csv | Select -Skip 1 | Out-File /home/zerto/data/all-vms.csv
+Get-VM -Name * | Select Name | ConvertTo-Csv | Select -Skip 1 | Out-File /home/zerto/data/all-vms.csv
 
 Write-Host "List Generation Compeleted"
 
