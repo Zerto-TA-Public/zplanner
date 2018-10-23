@@ -3,7 +3,7 @@ $data = [];
 $path = '/home/zerto/data/';
 $csvfile = $argv[1];
 $csvfile = $path.$csvfile;
-
+$datefilepath = '/home/zerto/include/datetime.txt';
 
 //connect to the database$datefilepath = '/home/zerto/include/datetime.txt';
 
