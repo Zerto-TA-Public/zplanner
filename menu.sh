@@ -96,48 +96,26 @@ do
 	      echo -e "========================\n"
               /usr/bin/pwsh /home/zerto/zplanner/workers/vm-getvms.ps1
               ;;
-          6) # Schedule Cron Jobs
+	  6) # Schedule Cron Jobs
 	      clear
 	      echo "====================="
 	      echo "Job Scheduling Wizard"
 	      echo -e "=====================\n"
-              while true
-	      do
-	      echo "How often should I collect VM info (CPU / Memory)?"
-	      echo "W = Weekly; D = Daily; N = Never"
-	      read cronvminfo
-	        case "$cronvminfo" in
-          	    "D" | "d") # Update VM info Daily
-			line="@daily /usr/bin/pwsh /home/zerto/zplanner/workers/vm-vminfo.ps1"
-			(crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
-			break
-			;;
-		    "W" | "w") # Update VM info Weekly
-			line="@weekly /usr/bin/pwsh /home/zerto/zplanner/workers/vm-vminfo.ps1"
-			(crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
-			break
-			;;
-		    "N" | "n") # Disable VM Info Collection
-			echo -e "Not Collecting VM CPU or Memory Information\n"
-			break
-			;;
-	            *) echo "invalid option try again";;
-      		esac
-	      done
-
-	      echo "How Often should I collect stats (in minutes)?"
-	      echo "Valid Options = 5, 10, 15, 20, 30, 60"
-	      read cronstats
-	      echo "Building Crontab..."
-	      echo "$cronstats" > /home/zerto/include/interval.txt
-	      if [ $cronstats -eq 60 ]
-	      then
-	      	line="0 * * * * /usr/bin/pwsh /home/zerto/zplanner/workers/vm-getio.ps1"
-	      else
-		line="*/$cronstats * * * * /usr/bin/pwsh /home/zerto/zplanner/workers/vm-getio.ps1"
-	      fi
+	      echo "Generating Crontab configuration..."
+	      
+	      #Add Line to gather CPU and Memory information
+	      line="@daily /usr/bin/pwsh /home/zerto/zplanner/workers/vm-vminfo.ps1"
 	      (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
-
+	      
+	      #Add cron for gathering statistics every 5 minutes
+	      echo "5" > /home/zerto/include/interval.txt
+	      line="*/5 * * * * /usr/bin/pwsh /home/zerto/zplanner/workers/vm-getio.ps1"
+	      (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
+	      
+	      #Add Log cleanup to run once per day
+	      line="@daily /usr/bin/find /home/zerto/logs -mtime +7 -type f -delete"
+	      (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
+	      
 	      crontab -l
               ;;
           7) # Config Zerto opp Information
