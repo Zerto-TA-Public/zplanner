@@ -1,24 +1,26 @@
 <?php
+//connect to the database
+$connect = mysqli_connect("localhost","root","Zertodata1!");
+mysqli_select_db($connect,"zerto"); //select the table
 
-  //connect to the database
-  $connect = mysqli_connect("localhost","root","Zertodata1!");
-  mysqli_select_db($connect,"zerto"); //select the table
+$result = mysqli_query($connect, "SHOW TABLES LIKE 'throughput'");
 
-$result = mysqli_query($connect, 
-		"UPDATE stats SET datestamp=(DATE_FORMAT(datestamp, '%Y-%m-%d %H:%i:00'))"
-		) or die (mysqli_error($connect));
-    
-$exists = mysqli_num_rows($result); 
+$exists = 0;
+$exists = mysqli_num_rows($result);
 
-if (!$exists) {
+echo $exists;
 
+if ($exists == 0) {
+  echo "Creating the Database and loading historical data";
   // create throughput table in database
-  $query = "CREATE TABLE `throughput`";
+  $query = "CREATE TABLE `zerto`.`throughput` ( `time` DATETIME NOT NULL , `WriteMbps` FLOAT(20) NOT NULL ) ENGINE = InnoDB";
   $result = mysqli_query($connect, $query) or die (mysqli_error($connect));
-
   //build historical throughput table
-  $query = "SELECT datestamp as time, ((SUM(KBWriteAvg) / 1024) * 8) as       WriteMbps FROM `stats` GROUP By datestamp"
-  $result = mysqli_query($connect, $query) or die (mysqli_error($connect));  
-
-
+  $query = "INSERT INTO throughput (time, WriteMbps) SELECT datestamp as time, ((SUM(KBWriteAvg) * 8) / 1024) as WriteMbps FROM `stats` GROUP By datestamp";
+  $result = mysqli_query($connect, $query) or die (mysqli_error($connect));
 }
+else
+{
+  echo "Table already exists";
+}
+?>
