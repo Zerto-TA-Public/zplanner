@@ -49,7 +49,7 @@ while ($data = fgetcsv($handle,1000, ",", '"')) {
                     '".addslashes($data[5])."',
                     '".addslashes($data[6])."',
 		    '".$writeIOAvg."',
-		    '$interval',
+		    '$interval'
                 )
             ") or die (mysqli_error($connect));
         }
