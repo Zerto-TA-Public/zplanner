@@ -156,6 +156,13 @@ do
 	        case "$crondel" in
 	             "y" | "Y") # delete crontab
 			crontab -r
+	  	        #Add Log cleanup to run once per day
+	      	 	line="@daily /usr/bin/find /home/zerto/logs -mtime +7 -type f -delete"
+	      	 	(crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
+	  	        #Add auto update to run once per day
+	      	 	line="@daily /bin/bash /home/zerto/modules/nightlyupdate.sh"
+	      	 	(crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
+
 			;;
 	             *) # do nothing
 			;;
