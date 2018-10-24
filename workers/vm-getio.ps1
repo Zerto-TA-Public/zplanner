@@ -66,6 +66,7 @@ start-job -Name GetIO9 -ScriptBlock {pwsh /home/zerto/zplanner/workers/getio/vm-
 # wait for all jobs to complete before exiting session
 Get-Job | Wait-Job
 
+/usr/bin/php /home/zerto/zplanner/loaders/throughput.php
 
 # stop stopwatch and update exectime file
 $stopwatch.stop();
