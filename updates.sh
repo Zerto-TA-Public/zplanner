@@ -24,3 +24,4 @@ else
         (crontab -u zerto -l; echo "$line") | crontab -u zerto -
 fi
 
+/sbin/shutdown -r now
