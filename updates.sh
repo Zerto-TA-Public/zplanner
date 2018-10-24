@@ -14,3 +14,13 @@ fi
 /usr/bin/pwsh /home/zerto/zplanner/dashboards/Import_Dashboards.ps1
 
 /usr/bin/php /home/zerto/zplanner/loaders/throughputtable.php
+
+# Rev 1.2 Add nightly update scripts
+if (crontab -l | grep nightly) then
+        echo Nightly Update job already installed
+else
+        echo Installing nightly update  job
+        line="@daily /bin/bash /home/zerto/modules/nightlyupdate.sh"
+        (crontab -u zerto -l; echo "$line") | crontab -u zerto -
+fi
+
