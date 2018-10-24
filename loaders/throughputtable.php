@@ -8,8 +8,6 @@ $result = mysqli_query($connect, "SHOW TABLES LIKE 'throughput'");
 $exists = 0;
 $exists = mysqli_num_rows($result);
 
-echo $exists;
-
 if ($exists == 0) {
   echo "Creating the Database and loading historical data\r\n";
   // create throughput table in database
