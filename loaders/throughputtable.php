@@ -11,9 +11,9 @@ $exists = mysqli_num_rows($result);
 echo $exists;
 
 if ($exists == 0) {
-  echo "Creating the Database and loading historical data";
+  echo "Creating the Database and loading historical data\r\n";
   // create throughput table in database
-  $query = "CREATE TABLE `zerto`.`throughput` ( `time` DATETIME NOT NULL , `WriteMbps` FLOAT(20) NOT NULL ) ENGINE = InnoDB";
+  $query = "\r\nCREATE TABLE `zerto`.`throughput` ( `time` DATETIME NOT NULL , `WriteMbps` FLOAT(20) NOT NULL ) ENGINE = InnoDB";
   $result = mysqli_query($connect, $query) or die (mysqli_error($connect));
   //build historical throughput table
   $query = "INSERT INTO throughput (time, WriteMbps) SELECT datestamp as time, ((SUM(KBWriteAvg) * 8) / 1024) as WriteMbps FROM `stats` GROUP By datestamp";
@@ -21,6 +21,6 @@ if ($exists == 0) {
 }
 else
 {
-  echo "Table already exists";
+  echo "\r\nTable already exists\r\n";
 }
 ?>
