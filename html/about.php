@@ -22,7 +22,7 @@
   <p>VM Storage analytics monitoring for public cloud and WAN connectivity sizing</p> 
 </div>
 
-<nav class="navbar justify-content-center navbar-expand-sm bg-dark navbar-dark">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -32,7 +32,7 @@
         <a class="nav-link" href="/">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" title="Graphical View of Stat Data" href="grafana.php">Grafana</a>
+        <a class="nav-link" title="Graphical View of Stat Data" href="http://<?php echo $server; ?>:3000/" >Grafana</a>
       </li>
     <!-- Dropdown -->
     <li class="nav-item dropdown">
@@ -66,7 +66,7 @@
       <h2>Project Info</h2>
       <h5>GitHub Repository</h5>
       <img src="img/github.png" class="rounded" alt="GitHub">
-      <p>All zPlanner code is available on <a href="https://github.com/Zerto-TA-Public/zplanner">Github</a>. Updates are downloaded from Github nightly and on demand from the console.</p>
+      <p>All zPlanner code is available on <a href="https://github.com/Zerto-TA-Public/zplanner">Github</a>. Updates are downloaded from Github when you run the update process from the console.</p>
       <h3>Open Source Components</h3>
       <p>Besides the custom code developed specifically for zPlanner, there are other open source components used. Below are links to those projects.</p>
       <ul class="nav nav-pills flex-column">
@@ -81,21 +81,20 @@
         <li class="nav-item">
           <a class="nav-link disabled" href="https://www.powershellgallery.com/packages/VMware.PowerCLI/10.2.0.9372002">VMware PowerCLI</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="https://www.grafana.com">Grafana</a>
-        </li>
       </ul>
       <hr class="d-sm-none">
     </div>
     <div class="col-sm-8">
-      <h2>GETTING STARTED</h2>
-      <h5>Initial Configuration of zPlanner</h5>
-      <p>From the zPlanner console, please run option 1 to update this zPlanner appliance before doing any other configuration.</p>
-      <p>Once updates have been applied configuring zPlanner is as easy as walking through the steps on the console. Note: If DHCP is not available you will need to use menu option 2 in order to configure
-	a static IP address, then run option 1 to update the appliance.</p>
-      <p>From there run menu option 3, 4, 5, 6, and 7. Once those proceedures are completed you can select VMs to monitor from the "VM Monitoring" drop down menu in the ribbon above. 
-	Once you have selected all of the VMs you would like to monitor, return to the Homepage and select "Grafana" from the menu ribbon."
-      <p>The login credentials for Grafana are "admin" and "Zertodata1!". After 5 minutes you should start to see data populate in the graphs and tables.
+      <h2>DISCLAIMER</h2>
+      <h5>Updated, Sep 15, 2018</h5>
+      <p>IN NO EVENT SHALL ZERTO OR ZPLANNER DEVELOPERS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR 
+	CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS 
+	DOCUMENTATION, EVEN IF ZERTO HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+      <p>ZERTO SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+	OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE AND ACCOMPANYING DOCUMENTATION, 
+        IF ANY, PROVIDED HEREUNDER IS PROVIDED "AS IS". ZERTO HAS NO OBLIGATION TO PROVIDE MAINTENANCE, 
+	SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.</p>
       <br>
     </div>
   </div>

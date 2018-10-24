@@ -13,6 +13,7 @@ if(isset($_POST['select_name'])){ // select_name will be replaced with your inpu
 <html><title>Monitor VM Selection Page</title>
 <body>
 <h1>Select the VMs to monitor then click monitor.</h1>
+<a href="index.php">Homepage</a>
 <p>Note that you can select some VMs and submit them, then repeat the process.</p>
 <p>This list only contains <b>UNMONITORED</b> VMs.</p>
 <p>To unmonitor VMs that are currently being monitored click <a href="unmonitor.php">here</a></p>
