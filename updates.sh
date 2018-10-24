@@ -11,5 +11,6 @@ else
         line="@daily /usr/bin/find /home/zerto/logs -mtime +7 -type f -delete"
         (crontab -u zerto -l; echo "$line") | crontab -u zerto -
 fi
+/usr/bin/pwsh /home/zerto/zplanner/dashboards/Import_Dashboards.ps1
 
 /usr/bin/php /home/zerto/zplanner/loaders/throughputtable.php
