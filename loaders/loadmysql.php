@@ -4,12 +4,17 @@ $path = '/home/zerto/data/';
 $csvfile = $argv[1];
 $csvfile = $path.$csvfile;
 $datefilepath = '/home/zerto/include/datetime.txt';
+$intfilepath = '/home/zerto/include/interval.txt';
 
 //connect to the database$datefilepath = '/home/zerto/include/datetime.txt';
 
 $datefile = fopen($datefilepath, "r") or die("Unable to open file!");
 $datestamp =  fgets($datefile);
 fclose($datefile);
+
+$intfile = fopen($intfilepath, "r") or die("Unable to open file!");
+$interval =  fgets($intfile);
+fclose($intfile);
 
 $connect = mysqli_connect("localhost","root","Zertodata1!");
 mysqli_select_db($connect,"zerto"); //select the table
@@ -33,7 +38,7 @@ while ($data = fgetcsv($handle,1000, ",", '"')) {
 			$writeIOAvg = $data[5];
 		}
 		echo "Average Write IO Size " . $writeIOAvg . "\n\n";
-            mysqli_query($connect, "INSERT INTO stats (datestamp, VM, Disk, CapacityGB, IOPSReadAvg, IOPSWriteAvg, KBWriteAvg, KBReadAvg, writeIOAvgKB) VALUES
+            mysqli_query($connect, "INSERT INTO stats (datestamp, VM, Disk, CapacityGB, IOPSReadAvg, IOPSWriteAvg, KBWriteAvg, KBReadAvg, writeIOAvgKB, statint) VALUES
                 (
 		    '$datestamp',
                     '".addslashes($data[0])."',
@@ -43,15 +48,11 @@ while ($data = fgetcsv($handle,1000, ",", '"')) {
                     '".addslashes($data[4])."',
                     '".addslashes($data[5])."',
                     '".addslashes($data[6])."',
-		    '".$writeIOAvg."'
+		    '".$writeIOAvg."',
+		    '$interval',
                 )
             ") or die (mysqli_error($connect));
         }
     } 
-    // change datestamp seconds to 00 to make graphing in grafana easier
-    //        mysqli_query($connect, 
-	//	"UPDATE stats SET datestamp=(DATE_FORMAT(datestamp, '%Y-%m-%d %H:%i:00'))"
-	//	) or die (mysqli_error($connect));
-
 }
 ?>
