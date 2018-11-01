@@ -514,7 +514,7 @@
         {
           "alias": "",
           "format": "table",
-          "rawSql": "SELECT\n CEIL((CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(\n  GROUP_CONCAT(WriteMbps ORDER BY WriteMbps SEPARATOR ','),\n   ',', 98/100 * COUNT(*) + 1), ',', -1) AS DECIMAL)  * .5 / 8 / 50)) AS 'ZCA Estimate'\nFrom throughput;\n",
+          "rawSql": "SELECT\n CEIL((CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(\n  GROUP_CONCAT(WriteMbps ORDER BY WriteMbps SEPARATOR ','),\n   ',', 98/100 * COUNT(*) + 1), ',', -1) AS DECIMAL)  * .5 / 8 / 20)) AS 'ZCA Estimate'\nFrom throughput;\n",
           "refId": "A"
         }
       ],
