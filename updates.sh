@@ -4,7 +4,8 @@
 mkdir -p /home/zerto/logs
 
 # Rev 1.1 Create log cleanup job and run the throughput table script retro actively
-if (crontab -l | grep logs) then
+logs=$(crontab -l | grep -ic logs)
+if [ $logs -eq 1 ] then
         echo Log cleanup already installed
 else
         echo Installing log cleanup job
@@ -16,7 +17,8 @@ fi
 /usr/bin/php /home/zerto/zplanner/loaders/throughputtable.php
 
 # Rev 1.2 Add nightly update scripts
-if (crontab -l | grep nightly) then
+nightly=$(crontab -l | grep -ic nightly)
+if [ $nightly -eq 1 ] then
         echo Nightly Update job already installed
 else
         echo Installing nightly update  job
