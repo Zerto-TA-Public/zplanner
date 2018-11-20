@@ -27,6 +27,12 @@
       "id": "table",
       "name": "Table",
       "version": "5.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": "5.0.0"
     }
   ],
   "annotations": {
@@ -53,8 +59,8 @@
       "datasource": "${DS_VM-STATS}",
       "fontSize": "100%",
       "gridPos": {
-        "h": 18,
-        "w": 24,
+        "h": 20,
+        "w": 17,
         "x": 0,
         "y": 0
       },
@@ -64,7 +70,7 @@
       "scroll": true,
       "showHeader": true,
       "sort": {
-        "col": 4,
+        "col": 2,
         "desc": true
       },
       "styles": [
@@ -82,100 +88,71 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(245, 54, 54, 0.9)"
           ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 4,
-          "mappingType": 1,
-          "pattern": "WriteMBpsMAX",
-          "thresholds": [
-            "50",
-            "100"
-          ],
-          "type": "number",
-          "unit": "MBs"
-        },
-        {
-          "alias": "",
-          "colorMode": "cell",
-          "colors": [
-            "rgba(50, 172, 45, 0.97)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 4,
-          "mappingType": 1,
-          "pattern": "WriteMBpsAvg",
-          "thresholds": [
-            "20",
-            "50"
-          ],
-          "type": "number",
-          "unit": "MBs"
-        },
-        {
-          "alias": "",
-          "colorMode": "cell",
-          "colors": [
-            "rgba(50, 172, 45, 0.97)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "IOPSAvg",
-          "thresholds": [
-            "250",
-            "500"
-          ],
-          "type": "number",
-          "unit": "iops"
-        },
-        {
-          "alias": "",
-          "colorMode": "cell",
-          "colors": [
-            "rgba(50, 172, 45, 0.97)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "IOPSMAX",
-          "thresholds": [
-            "5000",
-            "10000"
-          ],
-          "type": "number",
-          "unit": "iops"
-        },
-        {
-          "alias": "",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
           "decimals": 2,
           "pattern": "/.*/",
-          "thresholds": [],
+          "thresholds": [
+            "500",
+            "1000"
+          ],
           "type": "number",
-          "unit": "short"
+          "unit": "decgbytes"
         }
       ],
       "targets": [
         {
           "alias": "",
           "format": "table",
-          "rawSql": "SELECT\r\n  stats.VM AS VirtualMachine,\r\n  AVG(stats.IOPSWriteAvg) AS IOPSAvg,\r\n  MAX(stats.IOPSWriteAvg) AS IOPSMAX,\r\n  AVG(stats.KBWriteAvg) / 1024 AS WriteMBpsAvg,\r\n  MAX(stats.KBWriteAvg) / 1024 AS WriteMBpsMAX\r\nFROM stats\r\nGROUP BY VirtualMachine\r\nORDER BY VirtualMachine",
+          "rawSql": "SELECT VM, SUM((KBWriteAvg * (statint * 60) / 1000 /1000)) as \"1 Day Uncomp.\" FROM `stats` WHERE datestamp >= now() - INTERVAL 1 DAY GROUP BY VM",
           "refId": "A"
+        },
+        {
+          "alias": "",
+          "format": "table",
+          "rawSql": "SELECT VM, SUM((KBWriteAvg * (statint * 60) / 1000 /1000)) * .5 as \"1d 50% Comp.\" FROM `stats` WHERE datestamp >= now() - INTERVAL 1 DAY GROUP BY VM",
+          "refId": "B"
+        },
+        {
+          "alias": "",
+          "format": "table",
+          "rawSql": "SELECT VM, SUM((KBWriteAvg * (statint * 60) / 1000 /1000)) * .3 as \"1d 70% Comp.\" FROM `stats` WHERE datestamp >= now() - INTERVAL 1 DAY GROUP BY VM",
+          "refId": "C"
+        },
+        {
+          "alias": "",
+          "format": "table",
+          "rawSql": "SELECT VM, SUM((KBWriteAvg * (statint * 60) / 1000 / 1000)) as \"7 Day Uncomp.\" FROM `stats` WHERE datestamp >= now() - INTERVAL 7 DAY GROUP BY VM",
+          "refId": "D"
+        },
+        {
+          "alias": "",
+          "format": "table",
+          "rawSql": "SELECT VM, SUM((KBWriteAvg * (statint * 60) / 1000 /1000)) * .5 as \"7d 50% Comp.\" FROM `stats` WHERE datestamp >= now() - INTERVAL 7 DAY GROUP BY VM",
+          "refId": "E"
+        },
+        {
+          "alias": "",
+          "format": "table",
+          "rawSql": "SELECT VM, SUM((KBWriteAvg * (statint * 60) / 1000 / 1000)) * .3 as \"7d 70% Comp.\" FROM `stats` WHERE datestamp >= now() - INTERVAL 7 DAY GROUP BY VM",
+          "refId": "F"
         }
       ],
-      "title": "VM Write Stats",
+      "title": "Journal Size Estimation",
       "transform": "table",
       "type": "table"
+    },
+    {
+      "content": "# Journal sizes are estimates based on the average throughput per virtual machine. Also these values will only be accurate AFTER a full dataset is available for each time period.\n# For example, the 7 day journal estimate will not be accurate until zPlanner has 7 days or more of stats for a virtual machine.",
+      "gridPos": {
+        "h": 20,
+        "w": 7,
+        "x": 17,
+        "y": 0
+      },
+      "id": 4,
+      "links": [],
+      "mode": "markdown",
+      "title": "Notice!",
+      "type": "text"
     }
   ],
   "schemaVersion": 16,
@@ -214,7 +191,7 @@
     ]
   },
   "timezone": "",
-  "title": "VM Write Stats",
-  "uid": "2MFQgiOmz",
-  "version": 1
+  "title": "Estimated Journal Size",
+  "uid": "FP9MhEbiz",
+  "version": 3
 }

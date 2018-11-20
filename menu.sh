@@ -15,7 +15,7 @@ do
   # start menu output
   clear
   echo "=================================================="
-  echo "=      zPlanner Info and Config menu v4.0.0      ="
+  echo "=      zPlanner Info and Config menu v4.0.1      ="
   echo "=================================================="
   echo "Current Network Config:"
   echo "   Interface Name: $interface"

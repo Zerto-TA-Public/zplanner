@@ -112,12 +112,12 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "95th Per WAN Usage",
+      "tableColumn": "98th Per WAN Usage",
       "targets": [
         {
           "alias": "",
           "format": "table",
-          "rawSql": "SELECT\n CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(\n  GROUP_CONCAT(WriteMbps ORDER BY WriteMbps SEPARATOR ','),\n   ',', 98/100 * COUNT(*) + 1), ',', -1) AS DECIMAL) AS '95th Per WAN Usage'\nFrom throughput;",
+          "rawSql": "SELECT\n CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(\n  GROUP_CONCAT(WriteMbps ORDER BY WriteMbps SEPARATOR ','),\n   ',', 98/100 * COUNT(*) + 1), ',', -1) AS DECIMAL) AS '98th Per WAN Usage'\nFrom throughput;",
           "refId": "A"
         }
       ],
@@ -429,5 +429,5 @@
   "timezone": "",
   "title": "WAN Sizing Dashboard",
   "uid": "o8KoLvFmz",
-  "version": 19
+  "version": 20
 }
