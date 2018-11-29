@@ -13,9 +13,9 @@ zPlanner is a combination of two parts, there is code that makes zPlanner work (
 It should be noted that zPlanner is not supported by Zerto Support. It is a free tool created by Justin Paul, and supported on a best effort basis. To request support support you have two options:
 
 1. [Open GitHub Issue here](https://github.com/zerto-ta-Public/zplanner/issues)
-- Recommended for feature requests, bugs, and larger asks.
-1. [JPaul.me Drift Chat](http://jpaul.me)
-- For shorter requests or quick questions please use the Drift chat box on my blog.
+    - Recommended for feature requests, bugs, and larger asks.
+2. [JPaul.me Drift Chat](http://jpaul.me)
+    - For shorter requests or quick questions please use the Drift chat box on my blog.
 
 ## zPlanner Requirements
 
