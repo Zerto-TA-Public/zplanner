@@ -15,7 +15,7 @@ do
   # start menu output
   clear
   echo "=================================================="
-  echo "=      zPlanner Info and Config menu v4.0.1      ="
+  echo "=      zPlanner Info and Config menu v4.0.2      ="
   echo "=================================================="
   echo "Current Network Config:"
   echo "   Interface Name: $interface"
@@ -27,7 +27,7 @@ do
   echo "1.) Update zPlanner        2.) Configure Network Settings"
   echo "3.) Config Hypervisor Info 4.) Test Hypervisor Connectivity"
   echo "5.) Generate VM List       6.) Start Scheduled Jobs"
-  echo "7.) Config Zerto Op Info   8.) Delete Scheduled Jobs"
+  echo "7.) Config Auto Login      8.) Delete Scheduled Jobs"
   echo "9.) Bash Shell             0.) Quit"
   read choice
   case "$choice" in
@@ -102,47 +102,56 @@ do
 	      echo "Job Scheduling Wizard"
 	      echo -e "=====================\n"
 	      echo "Generating Crontab configuration..."
-	      
+
 	      #Add Line to gather CPU and Memory information
 	      line="@daily /usr/bin/pwsh /home/zerto/zplanner/workers/vm-vminfo.ps1"
 	      (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
-	      
+
 	      #Add cron for gathering statistics every 5 minutes
 	      echo "5" > /home/zerto/include/interval.txt
 	      line="*/5 * * * * /usr/bin/pwsh /home/zerto/zplanner/workers/vm-getio.ps1"
 	      (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
-	      
+
 	      #Add Log cleanup to run once per day
 	      line="@daily /usr/bin/find /home/zerto/logs -mtime +7 -type f -delete"
 	      (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
-	      
+
 	      crontab -l
               ;;
-          7) # Config Zerto opp Information
-	      cfgfile=/home/zerto/include/config.ini
-	      echo "Enter Customer Name:"
-	      read custname
-	      echo "Enter Customer Site Name:"
-	      read custsite
-	      echo "Enter Zerto Account Manager Name:"
-	      read zAM
-	      echo "Enter Zerto SE Name:"
-	      read zSE
-
-	      # add names to values
-	      custname="company=${custname}"
-	      custsite="site=${custsite}"
-	      zAM="am=${zAM}"
-	      zSE="se=${zSE}"
-
-	      if [ -f "$cfgfile" ]
+          7) # Config Auto Login
+	      enacfgfile=/etc/systemd/system/getty@tty1.service.d/override.conf
+	      discfgfile=/etc/systemd/system/getty@tty1.service.d/override.conf.disabled
+	      # see if override.conf is in place
+	      if [ -f "$enacfgfile" ]
 	      then
-		echo "$custname" > "$cfgfile"
-		echo "$custsite" >> "$cfgfile"
-		echo "$zAM" >> "$cfgfile"
-		echo "$zSE" >> "$cfgfile"
+		echo "Enabled"
+		login="Enabled"
+		nigol="Disabled"
+	      else
+		echo "Disabled"
+		login="Disabled"
+		nigol="Enabled"
 	      fi
-	      /usr/bin/php /home/zerto/zplanner/loaders/loadConfigmysql.php
+	      echo "Current Autologin status: $login"
+
+	      echo "Would you like to change this? (Y/N):"
+      	      read autologin
+	        case "$autologin" in
+	             "y" | "Y") # switch autologin status 
+			echo "Reconfiguring Auto Login from $login to $nigol"
+		     	if [ "$login" == "Enabled" ]
+	      	     	then
+			    sudo mv $enacfgfile $discfgfile
+			    echo "Disabling Auto Login Completed"
+	      	        else
+			    sudo mv $discfgfile $enacfgfile
+			    echo "Enabling Auto Login Completed"
+	      	        fi
+			;;
+	             *) # do nothing
+			echo "Nothing to do..."
+			;;
+	        esac
               ;;
           8) # Kill all exisint CronJobs
 	      clear
