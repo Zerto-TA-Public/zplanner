@@ -31,8 +31,14 @@ crontab -r
 # edit interval file
 echo $int > /home/zerto/include/interval.txt
 
-#schedule the vminfo task
+#schedule the the other tasks that are daily jobs
 line="@daily /usr/bin/pwsh /home/zerto/zplanner/workers/vm-vminfo.ps1"
+(crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
+
+line="@daily /usr/bin/find /home/zerto/logs -mtime +7 -type f -delete"
+(crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
+
+line="@daily /usr/bin/pwsh /home/zerto/zplanner/modules/nightlyupdate.ps1"
 (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
 
 #print new cron
