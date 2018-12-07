@@ -5,7 +5,7 @@ Below are some SQL Queries that are helpful for advanced planning, but are not c
 ## Create a table with Average write KB/s as well as total Provisioned Storage in GB for each VM
 
 ~~~~sql
-CREATE Table PerVMWriteAvg
+CREATE Table PerVMWriteAvg AS
 SELECT
     z.vm,
     AVG(z.sumKB) as AverageWriteKBps,
