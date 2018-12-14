@@ -1,0 +1,7 @@
+mariadb-server-10.0 mariadb-server/root_password password Zertodata1!
+mariadb-server-10.0 mariadb-server/root_password_again password Zertodata1!
+mariadb-server mariadb-server/root_password password Zertodata1!
+mariadb-server mariadb-server/root_password_again password Zertodata1!
+phpmyadmin phpmyadmin/dbconfig-install boolean false
+phpmyadmin phpmyadmin/upgrade-error select ignore
+phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2
