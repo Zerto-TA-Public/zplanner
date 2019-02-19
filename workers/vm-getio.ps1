@@ -23,10 +23,6 @@ While ($lockstatus -ne 1)
 	    {
 		echo “lockfile in use by other process!”
 		exit
-		#$rndwait = New-Object system.Random
-		#$rndwait= $rndwait.next(1,4)
-		#echo “Sleeping for $rndwait seconds”
-		#Start-Sleep $rndwait
 	    }
 	    Else
 	    {
