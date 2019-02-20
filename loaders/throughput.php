@@ -7,7 +7,7 @@ mysqli_select_db($connect,"zerto"); //select the table
         $date = $date->fetch_array();
         $date = $date['datestamp'];
         echo $date;
-        $getmbps = "SELECT (SUM(`KBWriteAvg`) * 8 / 1024) as mbps FROM `stats` WHERE datestamp = '$date'";
+        $getmbps = "SELECT (SUM(`KBWriteAvg`) * 8 / 1000) as mbps FROM `stats` WHERE datestamp = '$date'";
         $mbps = mysqli_query($connect, $getmbps) or die (mysqli_error($connect));
         $mbps = $mbps->fetch_array();
         $mbps = $mbps['mbps'];
