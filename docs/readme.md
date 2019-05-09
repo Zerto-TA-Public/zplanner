@@ -51,7 +51,7 @@ Once the VM has a valid IP address, make a note of it, then run the update wizar
 
 Once the appliance has rebooted continue the configuration process by pressing "3" followed by enter. In this step we will configure the vCenter credentials. Enter the following information:
 - vCenter FQDN or IP
-- vCenter username either user@domain or domain\\user (note the double \\)
+- vCenter username either user@domain or 'domain\\user' (note the double \\)
 - vCenter user's password
 
 ### Test vCenter information
