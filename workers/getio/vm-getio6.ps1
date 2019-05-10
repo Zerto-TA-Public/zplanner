@@ -1,6 +1,5 @@
 #!/usr/bin/pwsh
 $now=Get-Content "/home/zerto/include/datetime.txt"
-#$now=Get-Date -format "yyyyMMdd-HHmm"
 
 function getio {
 $Config = "/home/zerto/include/config.txt"

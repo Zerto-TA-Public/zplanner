@@ -43,7 +43,7 @@ While ($lockstatus -ne 1)
 /usr/bin/php /home/zerto/zplanner/loaders/tocsv.php
 
 #generate datetime for this run
-$datetime = get-date -Format "yyyy-MM-dd HH:mm:ss"
+$datetime = [DateTime]::UtcNow | get-date -Format "yyyy-MM-dd HH:mm:ss"
 $datetime | Out-File $datetimefile
 
 #start getio workers
