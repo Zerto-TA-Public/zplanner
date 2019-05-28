@@ -38,7 +38,7 @@ line="@daily /usr/bin/pwsh /home/zerto/zplanner/workers/vm-vminfo.ps1"
 line="@daily /usr/bin/find /home/zerto/logs -mtime +7 -type f -delete"
 (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
 
-line="@daily /usr/bin/pwsh /home/zerto/zplanner/modules/nightlyupdate.ps1"
+line="@daily /bin/bash /home/zerto/zplanner/modules/nightlyupdate.sh"
 (crontab -u zerto -l; echo "$line" ) | crontab -u zerto -
 
 #print new cron
