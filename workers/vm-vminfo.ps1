@@ -48,9 +48,7 @@ $list += Import-CSV "/home/zerto/data/vmlist9.csv"
 }
 
 ForEach ($VM in $list){
- 
-$vmview = Get-VM -Name $VM.Name | Get-View
- 
+    $vmview = Get-VM -Name $VM.Name | Get-View
     $VMInfo = "" |select-Object VMName,NumCPU,MEMSize
     $VMInfo.VMName = $vmview.Name
     $VMInfo.NumCPU = $vmview.Config.Hardware.NumCPU
