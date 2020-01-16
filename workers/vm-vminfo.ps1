@@ -43,7 +43,7 @@ $list += Import-CSV "/home/zerto/data/vmlist7.csv"
 if (Test-Path "/home/zerto/data/vmlist8.csv") {
 $list += Import-CSV "/home/zerto/data/vmlist8.csv"
 }
-if (Test-Path "/home/zerto/data/vmlist.csv") {
+if (Test-Path "/home/zerto/data/vmlist9.csv") {
 $list += Import-CSV "/home/zerto/data/vmlist9.csv"
 }
 
