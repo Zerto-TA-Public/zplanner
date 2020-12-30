@@ -24,7 +24,7 @@ then
         echo "Nightly Update job already installed"
 else
         echo Installing nightly update  job
-        line="@daily /bin/bash /home/zerto/modules/nightlyupdate.sh"
+        line="@daily /bin/bash /home/zerto/zplanner/modules/nightlyupdate.sh"
         (crontab -u zerto -l; echo "$line") | crontab -u zerto -
 fi
 
